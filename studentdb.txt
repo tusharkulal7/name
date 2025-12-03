@@ -1,0 +1,30 @@
+	use collage db
+
+db.students.insertMany([ { name: "Sita", rollNumber: 102, department: "ECE", marks: 90 },{ name: "Kiran", rollNumber: 103, department: "ME", marks: 78 }, { name: "Divya", rollNumber: 104, department: "CSE", marks: 88 },{ name: "Ajay", rollNumber: 105, department: "EEE", marks: 76 },{ name: "Meena", rollNumber: 106, department: "CSE", marks: 92 }, { name: "Rahul", rollNumber: 107, department: "ECE", marks: 84 }])
+
+
+db.students.updateOne( { rollNumber: 103 },{ $set: { marks: 82 } })
+
+
+db.students.updateMany( { department: "CSE" }, { $set: { department: "IT" } })
+	
+db.students.deleteOne({ rollNumber: 105 })
+
+db.students.deleteMany({ department: "EEE" })
+
+db.students.find().sort({ marks: -1 })
+
+db.students.find().sort({ marks: -1 }).limit(3)
+
+db.students.createIndex({ rollNumber: 1 })
+db.students.createIndex({ department: 1, marks: -1 })
+
+
+db.students.getIndexes()
+
+db.students.find({}, { _id: 0, name: 1 }).forEach(function(doc) { print(doc.name); });
+
+db.students.aggregate([{  $group: { _id: "$department", avgMarks: { $avg: "$marks" } } },{  $sort: { avgMarks: -1 } }])
+
+db.students.aggregate([ {  $group: { _id: "$department",  highestMarks: { $max: "$marks" } } },{ $sort: { highestMarks: -1 } }])
+
